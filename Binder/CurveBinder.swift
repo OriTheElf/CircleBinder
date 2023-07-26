@@ -46,7 +46,7 @@ class CurveBinder: UIView {
         boundedButton.frame = CGRect.init(x: 0, y: 0, width: 10, height: 10)
         boundedButton.layer.cornerRadius = boundedButton.frame.size.width/2
         
-        self.bringSubview(toFront: boundedButton)
+        self.bringSubviewToFront(boundedButton)
     }
     
     override func draw(_ rect: CGRect) {
@@ -75,8 +75,11 @@ class CurveBinder: UIView {
         let secondTempCoeffi = CoefficientObj.init(point: secondPoint)
         let thirdTempCoeffi = CoefficientObj.init(point: thirdPoint)
         
+        let v1 = (secondTempCoeffi.bInitial * thirdTempCoeffi.cInitial - thirdTempCoeffi.bInitial*secondTempCoeffi.cInitial)
+        let v2 = (secondTempCoeffi.aInitial * thirdTempCoeffi.cInitial - thirdTempCoeffi.aInitial * secondTempCoeffi.cInitial)
+        let v3 = (secondTempCoeffi.aInitial * thirdTempCoeffi.bInitial - thirdTempCoeffi.aInitial * secondTempCoeffi.bInitial)
         //Matrix determination caluculation
-        let det = (firstTempCoeffi.aInitial*(secondTempCoeffi.bInitial * thirdTempCoeffi.cInitial - thirdTempCoeffi.bInitial*secondTempCoeffi.cInitial)) - (firstTempCoeffi.bInitial*(secondTempCoeffi.aInitial * thirdTempCoeffi.cInitial - thirdTempCoeffi.aInitial * secondTempCoeffi.cInitial)) + (firstTempCoeffi.cInitial*(secondTempCoeffi.aInitial * thirdTempCoeffi.bInitial - thirdTempCoeffi.aInitial * secondTempCoeffi.bInitial))
+        let det = (firstTempCoeffi.aInitial*v1) - (firstTempCoeffi.bInitial*v2) + (firstTempCoeffi.cInitial*v3)
         
         //Inverce value caluculation first row
         firstTempCoeffi.aFinal = (1/det) * determinationOfTwoByTwoMatrix(firstRow: [secondTempCoeffi.bInitial, secondTempCoeffi.cInitial], secondRow: [thirdTempCoeffi.bInitial, thirdTempCoeffi.cInitial])
@@ -100,7 +103,7 @@ class CurveBinder: UIView {
         thirdTempCoeffi.cFinal = (1/det) * determinationOfTwoByTwoMatrix(firstRow: [firstTempCoeffi.aInitial, firstTempCoeffi.bInitial], secondRow: [secondTempCoeffi.aInitial, secondTempCoeffi.bInitial])
         
         //Final coefficient calluculation
-        finalCoefficients = CoefficientObj.init(point: CGPoint.zero)
+        finalCoefficients = CoefficientObj(point: .zero)
         
         finalCoefficients.aFinal = (firstTempCoeffi.aFinal * Float(firstPoint.y)) + (firstTempCoeffi.bFinal * Float(secondPoint.y)) + (firstTempCoeffi.cFinal * Float(thirdPoint.y))
         

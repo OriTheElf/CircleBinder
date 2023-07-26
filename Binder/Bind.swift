@@ -26,7 +26,7 @@ class Bind: UIView {
         
         circleLayer = CAShapeLayer.init()
         circleLayer.lineWidth = 2
-        circleLayer.strokeColor = UIColor.init(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.4).cgColor
+        circleLayer.strokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4).cgColor
         circleLayer.fillColor = UIColor.clear.cgColor
         
         boundedButton = UIButton.init()
@@ -45,7 +45,7 @@ class Bind: UIView {
         boundedButton.frame = CGRect.init(x: 0, y: 0, width: 10, height: 10)
         boundedButton.layer.cornerRadius = boundedButton.frame.size.width/2
         
-        self.bringSubview(toFront: boundedButton)
+        self.bringSubviewToFront(boundedButton)
     }
     
     override func draw(_ rect: CGRect) {
